@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TikTok No-Watermark Downloader</title>
+  <link rel="stylesheet" href="public/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>TikTok Downloader (No Watermark)</h1>
+    <form id="downloadForm">
+      <input type="text" id="url" placeholder="Enter TikTok video URL" required>
+      <button type="submit">Download</button>
+    </form>
+    <div id="result"></div>
+  </div>
+  <script>
+    document.getElementById('downloadForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const url = document.getElementById('url').value;
+      const response = await fetch('/api/download', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url })
+      });
+      const data = await response.json();
+      if (data.success) {
+        document.getElementById('result').innerHTML = `<a href="\${data.url}" target="_blank">Download Video</a>`;
+      } else {
+        document.getElementById('result').innerText = data.error;
+      }
+    });
+  </script>
+</body>
+</html>
